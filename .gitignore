@@ -1,0 +1,17 @@
+# Secrets and credentials - never commit these
+local.conf
+*.pem
+*-openrc.sh
+!config/*-openrc.sh.example
+clouds.yaml
+secure.yaml
+.env
+
+# Generated at runtime
+logs/
+downloads/
+*.log
+*.img
+*.qcow2
+*.raw
+.DS_Store

@@ -1,0 +1,38 @@
+# DevStack local.conf - single-node OpenStack lab
+# install.sh copies this to /opt/stack/devstack/local.conf and replaces __HOST_IP__.
+# CHANGE THE PASSWORD before installing. This is a lab config, not a hardened one.
+
+[[local|localrc]]
+
+# ---- Credentials ------------------------------------------------------------
+ADMIN_PASSWORD=ChangeMe-Lab-2026
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+
+# ---- Host -------------------------------------------------------------------
+HOST_IP=__HOST_IP__
+
+# ---- Services ---------------------------------------------------------------
+# Keystone, Glance, Placement, Nova, Neutron (DevStack default backend) are
+# enabled by default. Be explicit about the ones this lab depends on:
+enable_service horizon
+enable_service c-sch c-api c-vol
+
+# Not needed for this lab - saves RAM and install time
+disable_service tempest
+disable_service s-proxy s-object s-container s-account
+
+# ---- Cinder: LVM volume group on a loopback file -----------------------------
+VOLUME_BACKING_FILE_SIZE=20G
+
+# ---- Logging ----------------------------------------------------------------
+# Service logs go to the systemd journal: journalctl -u devstack@n-cpu
+LOGFILE=$DEST/logs/stack.sh.log
+LOGDAYS=2
+LOG_COLOR=False
+
+# ---- Virtualisation ---------------------------------------------------------
+# install.sh appends LIBVIRT_TYPE=qemu automatically if /dev/kvm is missing
+# (VM without nested virtualisation). Instances will then be slow.
+#LIBVIRT_TYPE=qemu
